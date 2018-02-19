@@ -16,7 +16,6 @@ while 1:
     screen.fill(0)
     
     # update the screen
-    pygame.display.set_caption('P.Earth')
     pygame.display.flip()
     # loop through the events
     for event in pygame.event.get():
