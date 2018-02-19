@@ -6,7 +6,7 @@ pygame.init()
 width, height = 640, 480
 screen=pygame.display.set_mode((width, height))
 
-
+#ÁPDÉT
 #  Gameloop
 while 1:
     # 5   clear the screen before drawing it again
