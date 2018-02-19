@@ -1,7 +1,6 @@
-<<<<<<< HEAD
+
 import pygame
 
-=======
 import tkinter
 import pygame
 from pygame.locals import *
@@ -27,4 +26,4 @@ while 1:
             # if it is quit the game
             pygame.quit() 
             exit(0) 
->>>>>>> 66799d301189927cff725efae210e344f6feef77
+
