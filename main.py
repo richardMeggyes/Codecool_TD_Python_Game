@@ -1,10 +1,14 @@
+
+import pygame
+
 import tkinter
 import pygame
 from pygame.locals import *
 
 pygame.init()
 width, height = 640, 480
-screen = pygame.display.set_mode((width, height))
+screen=pygame.display.set_mode((width, height))
+
 
 #  Gameloop
 while 1:
@@ -15,9 +19,11 @@ while 1:
     pygame.display.flip()
     # loop through the events
     for event in pygame.event.get():
-        
+
+
         # check if the event is the X button 
-        if event.type == pygame.QUIT:
+        if event.type==pygame.QUIT:
             # if it is quit the game
-            pygame.quit()
-            exit(0)
+            pygame.quit() 
+            exit(0) 
+
