@@ -3,9 +3,7 @@ import math
 from pygame.locals import *
 import time
 
-pygame.init()
-width, height = 640, 480
-screen = pygame.display.set_mode((width, height))
+
 
 
 class Tower:
@@ -70,6 +68,9 @@ class Projectile:
 tower1 = Tower(30, 50, "./Assets/tower1.png")
 
 if __name__ == "__main__":
+    pygame.init()
+    width, height = 640, 480
+    screen = pygame.display.set_mode((width, height))
     while True:
         pygame.draw.rect(screen, (200, 200, 200), pygame.Rect(0, 0, width, height))
         tower1.turn_tower()
