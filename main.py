@@ -78,6 +78,17 @@ def import_map(filename):
     infile.close()
     return return_me
 
+def enemy_step_forward(enemy_step_update_interval, i, delay_until):
+    if time.time() > delay_until:
+        i += 1
+        delay_until = time.time() + enemy_step_update_interval
+
+    return i, delay_until
+
+    # TODO Az enemy megjelenítést class-ba kéne rendezni, hogy egyszerre több jelenhessen meg a képernyőn, időben is kicsit eltolva egymástól
+    # TODO i változót is bele kéne rakni az enemybe, mert ez mondja meg, hogy hova ugorjon
+    # TODO NiceToHave: enemy glájdol egyik poziból a másikba és nem ugrál
+
 
 def main():
     pygame.init()
@@ -95,15 +106,17 @@ def main():
     pygame.display.flip()
 
     tiles_list = get_path_from_map(level1)
-    print(tiles_list)
+
     #  Gameloop
     i = 0
+    delay_until = 0.0
+    enemy_step_update_interval = 0.05 # Enemy előreléptetés ideje megadva másodpercben 0.05 = 20 lépés / sec
 
     while 1:
         # clear the screen before drawing it again
         screen.fill(0)
-        time.sleep(0.01)
-        i += 1
+
+
         for y in range(int(HEIGHT / resolution)):
             for x in range(int(WIDTH / resolution)):
                 screen.blit(grass, (x * resolution, y * resolution))
@@ -113,7 +126,12 @@ def main():
         screen.blit(start_path, (tiles_list[0][0] * resolution, tiles_list[0][1] * resolution))
         screen.blit(end_path, (tiles_list[-1][0] * resolution, tiles_list[-1][1] * resolution))
 
-        screen.blit(player, (tiles_list[i][1]*resolution, tiles_list[i][0]*resolution))
+        # Minden enemy_step_update_interval-ban megadott másodpercenként előrelépteti az enemyt
+        i, delay_until = enemy_step_forward(enemy_step_update_interval, i, delay_until)
+
+        # Display enemy
+        screen.blit(player, ((tiles_list[i][1]*resolution)-10, (tiles_list[i][0]*resolution)-10))
+        # a (-10)-ek az út közepére igazítják
 
         # update the screen
         pygame.display.flip()
