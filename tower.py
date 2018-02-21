@@ -27,7 +27,7 @@ class Tower:
     
     def turn_tower(self):
         position = pygame.mouse.get_pos()
-        self.angle = (180 / math.pi) * -math.atan2(position[1] - self.coord_y, position[0] - self.coord_x) - 90
+        self.angle = (360 / math.pi) * -math.atan2(position[1] - self.coord_y, position[0] - self.coord_x) - 90
         self.image = pygame.transform.rotate(self.original_image, self.angle)
     
     def shoot(self):
@@ -47,13 +47,22 @@ class Projectile:
         self.coord_x = coord_x
         self.coord_y = coord_y
         self.angle = angle
+        self.x = 0
+        self.y = 0
     
     def print_projectile(self):
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.coord_x, self.coord_y, self.size, self.size))
     
     def move(self):
-        self.coord_x +=
-        self.coord_y +=
+        magnitude = 0.01
+        angle = ((math.radians(self.angle) - math.pi / 2)) - math.radians(90)
+        x = math.sin(angle) * magnitude
+        y = math.cos(angle) * magnitude
+        self.x += float(x)
+        self.y += float(y)
+
+        self.coord_x += float(self.x)
+        self.coord_y += float(self.y)
 
 
 tower1 = Tower(30, 50, "./Assets/tower1.png")
