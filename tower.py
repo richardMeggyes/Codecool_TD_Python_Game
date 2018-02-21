@@ -27,7 +27,7 @@ class Tower:
     
     def turn_tower(self):
         position = pygame.mouse.get_pos()
-        self.angle = (360 / math.pi) * -math.atan2(position[1] - self.coord_y, position[0] - self.coord_x) - 90
+        self.angle = (180 / math.pi) * -math.atan2(position[1] - self.coord_y, position[0] - self.coord_x) - 90
         self.image = pygame.transform.rotate(self.original_image, self.angle)
     
     def shoot(self):
@@ -35,10 +35,14 @@ class Tower:
             self.time = time.time()
             new_bullet = Projectile(self.coord_x, self.coord_y, self.angle)
             self.bullets.append(new_bullet)
-        
-        for bullet in self.bullets:
+
+        for i, bullet in enumerate(self.bullets):
             bullet.move()
             bullet.print_projectile()
+
+            dist = math.sqrt((self.coord_x - bullet.coord_x) ** 2 + (self.coord_y - bullet.coord_y) ** 2)
+            if dist > 300:
+                self.bullets.pop(i)
 
 
 class Projectile:
@@ -54,15 +58,13 @@ class Projectile:
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.coord_x, self.coord_y, self.size, self.size))
     
     def move(self):
-        magnitude = 0.01
+        magnitude = 0.02
         angle = ((math.radians(self.angle) - math.pi / 2)) - math.radians(90)
         x = math.sin(angle) * magnitude
         y = math.cos(angle) * magnitude
-        self.x += float(x)
-        self.y += float(y)
-
-        self.coord_x += float(self.x)
-        self.coord_y += float(self.y)
+    
+        self.coord_x += float(x)
+        self.coord_y += float(y)
 
 
 tower1 = Tower(30, 50, "./Assets/tower1.png")
