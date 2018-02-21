@@ -1,4 +1,4 @@
-import pygame
+import pygame, time
 from pygame.locals import *
 
 
@@ -89,16 +89,21 @@ def main():
     start_path = pygame.image.load("Assets/start_path.png")
     end_path = pygame.image.load("Assets/end_path.png")
     error = pygame.image.load("Assets/error.png")
+    player = pygame.image.load("Assets/tower1.png")
     resolution = 20
 
     pygame.display.flip()
 
+    tiles_list = get_path_from_map(level1)
+    print(tiles_list)
     #  Gameloop
+    i = 0
+
     while 1:
         # clear the screen before drawing it again
         screen.fill(0)
-        tiles_list = get_path_from_map(level1)
-
+        time.sleep(0.01)
+        i += 1
         for y in range(int(HEIGHT / resolution)):
             for x in range(int(WIDTH / resolution)):
                 screen.blit(grass, (x * resolution, y * resolution))
@@ -107,6 +112,8 @@ def main():
 
         screen.blit(start_path, (tiles_list[0][0] * resolution, tiles_list[0][1] * resolution))
         screen.blit(end_path, (tiles_list[-1][0] * resolution, tiles_list[-1][1] * resolution))
+
+        screen.blit(player, (tiles_list[i][1]*resolution, tiles_list[i][0]*resolution))
 
         # update the screen
         pygame.display.flip()
@@ -117,6 +124,7 @@ def main():
                 # if it is quit the game
                 pygame.quit()
                 exit(0)
+
 
 
 if __name__ == "__main__":
