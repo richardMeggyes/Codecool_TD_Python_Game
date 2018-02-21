@@ -4,65 +4,67 @@ import pygame
 import tkinter
 import pygame
 from pygame.locals import *
-"""
+
 def convert_map(map):
     map_list = []
     sorted_list = []
-    for row in map:
-        for col in row:
+    for iter, row in enumerate(map):
+        for iter2, col in enumerate(row):
             #if col == '1':
             #    map_list.append([col, row])
             if col == '2':
-                sorted_list.append([col, row])
+                sorted_list.append([iter2, iter])
                 break
     finished_parsing = False
     while not finished_parsing:
+
+        last_x = int(sorted_list[-1][0])
+        last_y = int(sorted_list[-1][1])
+
         try:
-            # érts: Ha az utolsó elem 0. kordinátája +1en és 1. kordinátáján 1-es van:
-            if map[int(sorted_list[-1][0]) + 1][int(sorted_list[-1][1])] == '1':
-                sorted_list.append([int(sorted_list[-1][0]) + 1 , int(sorted_list[-1][1])])
-                print(sorted_list[-1], '\n')
-            elif map[int(sorted_list[-1][0]) + 1][int(sorted_list[-1][1])] == '3':
+            # érts: Ha az utolsó elem 0. kordinátája +1-en és 1. kordinátáján 1-es van:
+            if map[last_x + 1][last_y] == '1' and [last_x + 1, last_y] not in sorted_list:
+                sorted_list.append([last_x + 1, last_y])
+                #print(sorted_list[-1], '\n')
+            elif map[last_x + 1][last_y] == '3':
                 finished_parsing = True
 
         except:
-            print('asdasd\n')
-            continue
+            pass
 
         try:
-            # érts: Ha az utolsó elem 0. kordinátája - 1en és 1. kordinátáján 1-es van:
-            if map[ int( sorted_list[-1][0] ) - 1 ][ int( sorted_list[-1][1] )  ] == '1':
-                sorted_list.append([int(sorted_list[-1][0]) - 1, int(sorted_list[-1][1])])
-                print(sorted_list[-1], '\n')
-            elif map[ int( sorted_list[-1][0] ) - 1][ int( sorted_list[-1][1] ) ] == '3':
+            if map[last_x-1][last_y] == '1'and [last_x - 1, last_y] not in sorted_list:
+                sorted_list.append([last_x - 1, last_y])
+                #print(sorted_list[-1], '\n')
+            elif map[last_x - 1][last_y] == '3':
                 finished_parsing = True
         except:
-            continue
+            pass
 
 
         try:
             # érts: Ha az utolsó elem 0. kordinátáján és 1. kordinátája + 1-en 1-es van:
-            if map[int(sorted_list[-1][0]) ][int(sorted_list[-1][1])+ 1] == '1':
-                sorted_list.append([int(sorted_list[-1][0]) , int(sorted_list[-1][1]) + 1])
-                print(sorted_list[-1], '\n')
-            elif map[int(sorted_list[-1][0]) ][int(sorted_list[-1][1])+ 1] == '3':
+            if map[last_x][last_y + 1] == '1' and [last_x, last_y + 1] not in sorted_list:
+                sorted_list.append([last_x, last_y + 1])
+                #print(sorted_list[-1], '\n')
+            elif map[last_x][last_y + 1] == '3':
                 finished_parsing = True
         except:
-            continue
+            pass
         try:
             # érts: Ha az utolsó elem 0. kordinátáján és 1. kordinátája - 1-en 1-es van:
-            if map[int(sorted_list[-1][0])][int(sorted_list[-1][1]) - 1] == '1':
-                sorted_list.append([int(sorted_list[-1][0]) - 1, int(sorted_list[-1][1])])
-                print(sorted_list[-1], '\n')
-            elif map [int (sorted_list[-1][0]) ][ int(sorted_list[-1][1])  - 1]  == '3':
+            if map[last_x][last_y - 1] == '1' and [last_x, last_y - 1] not in sorted_list:
+                sorted_list.append([last_x, last_y -1])
+                #print(sorted_list[-1], '\n')
+            elif map[last_x][last_y - 1]  == '3':
                 finished_parsing = True
         except:
-            continue
+            pass
 
 
     
 
-    return sorted_list"""
+    return sorted_list
 
 
 
@@ -75,9 +77,16 @@ def main():
     infile = open("level.txt", 'r')
     for line in infile:
         line = line.strip('\n')
-        map1.append(line)
+        newline = []
+        for c in line:
+            newline.append(c)
+        map1.append(newline)
     infile.close()
-    #print(convert_map(map1))
+
+
+    print(convert_map(map1))
+
+
     grass = pygame.image.load("grass.png")
     path = pygame.image.load("path.png")
     start_path = pygame.image.load("start_path.png")
