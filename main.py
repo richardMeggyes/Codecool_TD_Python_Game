@@ -8,14 +8,17 @@ from pygame.locals import *
 def convert_map(map):
     map_list = []
     sorted_list = []
+
+    # start tile
     for iter, row in enumerate(map):
         for iter2, col in enumerate(row):
-            #if col == '1':
-            #    map_list.append([col, row])
             if col == '2':
                 sorted_list.append([iter2, iter])
                 break
+
+
     finished_parsing = False
+
     while not finished_parsing:
 
         last_x = int(sorted_list[-1][0])
@@ -61,8 +64,14 @@ def convert_map(map):
         except:
             pass
 
+    # end tile
+    for iter, row in enumerate(map):
+        for iter2, col in enumerate(row):
 
-    
+            if col == '3':
+                sorted_list.append([iter2, iter])
+                break
+
 
     return sorted_list
 
@@ -101,20 +110,17 @@ def main():
     while 1:
     # clear the screen before drawing it again
         screen.fill(0)
+        tiles_list = convert_map(map1)
 
+        for y in range(int(height / res)):
+            for x in range(int(width / res)):
+                screen.blit(grass, (x * res, y * res))
+        for item in tiles_list:
+            screen.blit(path, (item[1]*res, item[0]*res))
 
-        for x in range(int(width / res)):
-            for y in range(int(height / res)):
-                if (map1[y][x] == '0'):  # 0 means grass
-                    screen.blit(grass, (x * res, y * res))
-                elif (map1[y][x] == '1'):  # 1 means path
-                    screen.blit(path, (x * res, y * res))
-                elif (map1[y][x] == '2'):  # 2 means start path
-                    screen.blit(start_path, (x*res, y*res))
-                elif (map1[y][x] == '3'):  # 3 means end path
-                    screen.blit(end_path, (x*res, y*res))
-                else:
-                    screen.blit(error, (x*res, y*res))
+        screen.blit(start_path, (tiles_list[0][0]*res, tiles_list[0][1]*res))
+        screen.blit(end_path, (tiles_list[-1][0]*res, tiles_list[-1][1]*res))
+
 
         # update the screen
         pygame.display.flip()
