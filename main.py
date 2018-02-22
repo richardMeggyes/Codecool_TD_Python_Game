@@ -1,4 +1,4 @@
-import pygame, time
+import pygame, time, math
 from pygame.locals import *
 from maphandlers import *
 from simplebutton import *
@@ -39,6 +39,28 @@ def enemy_step_forward(enemy_step_update_interval, i, delay_until):
     mainDisplay.blit(player, ((tiles_list[i][1] * resolution) - 10, (tiles_list[i][0] * resolution) - 10))
 
     # a (-10)-ek az út közepére igazítják   """
+
+def collision_detection(enemies, towers):
+    try:
+        for i, tower in enumerate(towers):
+            for bullet in tower.bullets:
+                b_x = bullet.coord_x
+                b_y = bullet.coord_y
+                for j, enemy in enumerate(enemies):
+                    e_x = enemy.position[0]
+                    e_y = enemy.position[1]
+
+                    dist = math.sqrt((e_x - b_x) ** 2 + (e_y - b_y) ** 2)
+                    if dist < 20:
+                        tower.bullets.pop(i)
+                        print(type(enemies))
+                        enemies = enemies.pop[j]
+                        print("SAJT")
+
+    except Exception as e:
+        print(e)
+    return enemies
+
 
 
 def main():
@@ -91,6 +113,8 @@ def main():
     while 1:
         # clear the mainDisplay before drawing it again
         mainDisplay.fill(something_less_eye_cancery)
+
+        enemies = collision_detection(enemies, towers)
         
         if time.time() > delay_until:
             delay_until = time.time() + enemy_step_update_interval
