@@ -54,7 +54,7 @@ def collision_detection(enemies, towers):
                     if dist < 20:
                         tower.bullets.pop(i)
                         print(type(enemies))
-                        enemies = enemies.pop[j]
+                        enemies = enemies.pop(j)
                         print("SAJT")
 
     except Exception as e:
@@ -119,7 +119,7 @@ def main():
         if time.time() > delay_until:
             delay_until = time.time() + enemy_step_update_interval
             enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
-        
+
         for t in towers:
             target = enemies[0].position
             last_distance = 10000
@@ -128,10 +128,10 @@ def main():
                 if dist_squared < last_distance and dist_squared < t.range ** 2:
                     last_distance = dist_squared
                     target = e.position
-            
+
             t.turn_tower(target)
             t.shoot()
-        
+
         # loop through the events
         for event in pygame.event.get():
             # All the logic of the game should be decided here, and later processed after this FOR
@@ -154,13 +154,13 @@ def main():
                 # if it is quit the game
                 pygame.quit()
                 exit(0)
-        
+
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
                 enemies.pop(i)
             if clock_counter % 6 == 0:
                 e.move()
-        
+
         # update the mainDisplay
         for w in widgets:
             w.draw(mainDisplay)
