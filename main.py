@@ -2,16 +2,17 @@ import pygame, time
 from pygame.locals import *
 from maphandlers import *
 from simplebutton import *
+from enemy import *
 
 
 def enemy_step_forward(enemy_step_update_interval, i, delay_until):
     if time.time() > delay_until:
         i += 1
         delay_until = time.time() + enemy_step_update_interval
-
     return i, delay_until
 
-    # TODO Az enemy megjelenítést class-ba kéne rendezni, hogy egyszerre több jelenhessen meg a képernyőn, időben is kicsit eltolva egymástól
+    # TODO Az enemy megjelenítést class-ba kéne rendezni, hogy egyszerre több jelenhessen meg a képernyőn,
+    # időben is kicsit eltolva egymástól
     # TODO i változót is bele kéne rakni az enemybe, mert ez mondja meg, hogy hova ugorjon
     # TODO NiceToHave: enemy glájdol egyik poziból a másikba és nem ugrál
 
@@ -77,10 +78,17 @@ def main():
     widgets.append(button(mainDisplay, 100, 100, 100, 50, "New Game", green, red, do_nothing))
     widgets.append(button(mainDisplay, 400, 100, 100, 50, "Exit", red, blue, pygame.quit, exit))
 
+    enemies = []
+    speed = 1
+    enemies.append(enemy(mainDisplay, speed, player, 0, tiles_list))
+
     while 1:
         # clear the mainDisplay before drawing it again
-        mainDisplay.fill(black)
+        mainDisplay.fill(purple)
 
+        if time.time() > delay_until:
+            delay_until = time.time() + enemy_step_update_interval
+            enemies.append(enemy(mainDisplay, speed, player, 0, tiles_list))
 
         # loop through the events
         for event in pygame.event.get():
@@ -105,9 +113,16 @@ def main():
                 pygame.quit()
                 exit(0)
 
+        for i, e in enumerate(enemies):
+            if e.place == len(tiles_list)-1:
+                enemies.pop(i)
+            e.move()
+
         # update the mainDisplay
         for w in widgets:
             w.draw(mainDisplay)
+        for e in enemies:
+            e.draw()
         pygame.display.update()
         # set a specific framerate of the display/meaning that every second there will be () ticks of the while
         clock.tick(60)
