@@ -61,7 +61,7 @@ def main():
     start_path = pygame.image.load("Assets/start_path.png")
     end_path = pygame.image.load("Assets/end_path.png")
     error = pygame.image.load("Assets/error.png")
-    player = pygame.image.load("Assets/tower1.png")
+    player = pygame.image.load("Assets/enemy.png")
     resolution = 20
 
     pygame.display.update()

@@ -57,7 +57,7 @@ class Projectile:
     
     def move(self):
         magnitude = 0.02
-        angle = ((math.radians(self.angle) - math.pi / 2)) - math.radians(90)
+        angle = (math.radians(self.angle) - math.pi / 2) - math.radians(90)
         x = math.sin(angle) * magnitude
         y = math.cos(angle) * magnitude
     
