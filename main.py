@@ -42,12 +42,11 @@ def main():
     #  Gameloop
     i = 0
     delay_until = 0.0
-    enemy_step_update_interval = 0.05 # Enemy előreléptetés ideje megadva másodpercben 0.05 = 20 lépés / sec
+    enemy_step_update_interval = 0.05  # Enemy előreléptetés ideje megadva másodpercben 0.05 = 20 lépés / sec
 
     while 1:
         # clear the mainDisplay before drawing it again
         mainDisplay.fill(0)
-
 
         for y in range(int(HEIGHT / resolution)):
             for x in range(int(WIDTH / resolution)):
@@ -62,7 +61,8 @@ def main():
         i, delay_until = enemy_step_forward(enemy_step_update_interval, i, delay_until)
 
         # Display enemy
-        mainDisplay.blit(player, ((tiles_list[i][1]*resolution)-10, (tiles_list[i][0]*resolution)-10))
+        mainDisplay.blit(player, ((tiles_list[i][1] * resolution) - 10, (tiles_list[i][0] * resolution) - 10))
+
         # a (-10)-ek az út közepére igazítják
 
         # update the mainDisplay
@@ -74,7 +74,6 @@ def main():
                 # if it is quit the game
                 pygame.quit()
                 exit(0)
-
 
 
 if __name__ == "__main__":
