@@ -1,8 +1,12 @@
 import pygame
 
+def do_nothing():
+    pass
+
 class button:
 
-    def __init__(self,display, x, y, w, h, text, fg, bg, f, f2):
+
+    def __init__(self,display, x, y, w, h, text, fg, bg, f=do_nothing, f2= do_nothing):
         self.pos_x = x
         self.pos_y = y
         self.width = w
@@ -11,12 +15,14 @@ class button:
         self.fg_color = fg
         self.bg_color = bg
         self.target_display = display
-        self.func = f(f2)
+        self.funcs = [f,f2]
+
 
     def pressed(self, x, y):
         if self.pos_x < x < self.pos_x + self.width and self.pos_y < y < self.pos_y + self.height:
-            print("clicked")
-            self.func
+            #print("clicked")
+            for f in self.funcs:
+                f()
 
 
     def draw(self, target):

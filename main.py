@@ -74,7 +74,8 @@ def main():
     delay_until = 0.0
     enemy_step_update_interval = 0.05  # Enemy előreléptetés ideje megadva másodpercben 0.05 = 20 lépés / sec
     widgets = []
-    widgets.append(button(mainDisplay, 100, 100, 100, 50, "ASDASD", red, white, print, "asd"))
+    widgets.append(button(mainDisplay, 100, 100, 100, 50, "New Game", green, red, do_nothing))
+    widgets.append(button(mainDisplay, 400, 100, 100, 50, "Exit", red, blue, pygame.quit, exit))
 
     while 1:
         # clear the mainDisplay before drawing it again
