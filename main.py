@@ -72,11 +72,11 @@ def main():
     tiles_list = get_path_from_map(level1)
     
     clock = pygame.time.Clock()
-    
+    clock_counter = 0
     # Gameloop
     i = 0
     delay_until = 0.0
-    enemy_step_update_interval = 0.05  # Enemy előreléptetés ideje megadva másodpercben 0.05 = 20 lépés / sec
+    enemy_step_update_interval = 2  # Enemy előreléptetés ideje megadva másodpercben 0.05 = 20 lépés / sec
     widgets = []
     widgets.append(button(mainDisplay, 100, 100, 100, 50, "New Game", green, red, do_nothing))
     widgets.append(button(mainDisplay, 400, 100, 100, 50, "Exit", red, blue, pygame.quit, exit))
@@ -86,7 +86,7 @@ def main():
     enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
     
     towers = []
-    towers.append(Tower(mainDisplay, 100, 100, tower_image, 9, 0.2))
+    towers.append(Tower(mainDisplay, 80, 80, tower_image, 9, 0.2))
     
     while 1:
         # clear the mainDisplay before drawing it again
@@ -97,8 +97,15 @@ def main():
             enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
         
         for t in towers:
-            position = enemies[0].position
-            t.turn_tower(position)
+            target = enemies[0].position
+            last_distance = 10000
+            for e in enemies:
+                dist_squared = (t.coord_x - e.position[0]) ** 2 + (t.coord_x - e.position[0]) ** 2
+                if dist_squared < last_distance and dist_squared < t.range ** 2:
+                    last_distance = dist_squared
+                    target = e.position
+            
+            t.turn_tower(target)
             t.shoot()
         
         # loop through the events
@@ -127,7 +134,8 @@ def main():
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
                 enemies.pop(i)
-            e.move()
+            if clock_counter % 6 == 0:
+                e.move()
         
         # update the mainDisplay
         for w in widgets:
@@ -140,6 +148,9 @@ def main():
                 bullet.print_projectile()
         pygame.display.update()
         # set a specific framerate of the display/meaning that every second there will be () ticks of the while
+        clock_counter += 1
+        if clock_counter == 60:
+            clock_counter = 0
         clock.tick(60)
 
 

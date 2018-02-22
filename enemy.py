@@ -14,8 +14,8 @@ class Enemy:
         self.resolution = 20
     
     def calc_position(self):
-        self.position =((self.path[self.place][1] * self.resolution) - 10, (self.path[self.place][0] *
-                                                                            self.resolution) - 10)
+        self.position =((self.path[self.place][1] * self.resolution), (self.path[self.place][0] *
+                                                                            self.resolution))
     
         
     def draw(self):

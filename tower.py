@@ -18,6 +18,7 @@ class Tower:
         self.time = time.time()
         self.time_to_shoot_again = time_to_shoot_again
         self.bullet_speed = bullet_speed
+        self.range = 300
     
     def draw(self):
         self.rect = self.image.get_rect(center=(self.coord_x, self.coord_y))
@@ -37,7 +38,7 @@ class Tower:
             bullet.move(self.bullet_speed)
             
             dist = math.sqrt((self.coord_x - bullet.coord_x) ** 2 + (self.coord_y - bullet.coord_y) ** 2)
-            if dist > 300:
+            if dist > self.range:
                 self.bullets.pop(i)
 
 
