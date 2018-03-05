@@ -138,16 +138,16 @@ def main():
                 e.move()
         
         # update the mainDisplay
-        for w in widgets:
-            w.draw(mainDisplay)
-        """ y in range(int(HEIGHT / resolution)):
+        # for w in widgets:
+        #    w.draw(mainDisplay)
+        for y in range(int(HEIGHT / resolution)):
             for x in range(int(WIDTH / resolution)):
                 mainDisplay.blit(grass, (x * resolution, y * resolution))
         for item in tiles_list:
             mainDisplay.blit(path, (item[1] * resolution, item[0] * resolution))
 
         mainDisplay.blit(start_path, (tiles_list[0][0] * resolution, tiles_list[0][1] * resolution))
-        mainDisplay.blit(end_path, (tiles_list[-1][0] * resolution, tiles_list[-1][1] * resolution))"""
+        mainDisplay.blit(end_path, (tiles_list[-1][0] * resolution, tiles_list[-1][1] * resolution))
 
         for e in enemies:
             e.draw()
