@@ -19,6 +19,7 @@ class Tower:
         self.time_to_shoot_again = time_to_shoot_again
         self.bullet_speed = bullet_speed
         self.range = 300
+        self.valid_target = False
     
     def draw(self):
         self.rect = self.image.get_rect(center=(self.coord_x, self.coord_y))
@@ -31,8 +32,9 @@ class Tower:
     def shoot(self):
         if self.time + self.time_to_shoot_again < time.time():
             self.time = time.time()
-            new_bullet = Projectile(self.display, self.coord_x, self.coord_y, self.angle)
-            self.bullets.append(new_bullet)
+            if self.valid_target:
+                new_bullet = Projectile(self.display, self.coord_x, self.coord_y, self.angle)
+                self.bullets.append(new_bullet)
         
         for i, bullet in enumerate(self.bullets):
             bullet.move(self.bullet_speed)

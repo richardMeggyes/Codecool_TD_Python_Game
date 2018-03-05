@@ -83,7 +83,7 @@ def main():
     
     enemies = []
     speed = 1
-    enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
+    # enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
     
     towers = []
     towers.append(Tower(mainDisplay, 80, 80, tower_image, 9, 0.2))
@@ -91,13 +91,18 @@ def main():
     while 1:
         # clear the mainDisplay before drawing it again
         mainDisplay.fill(something_less_eye_cancery)
-        
-        if time.time() > delay_until:
+
+        """if time.time() > delay_until:
             delay_until = time.time() + enemy_step_update_interval
-            enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
+            enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))"""
         
         for t in towers:
-            target = enemies[0].position
+            if not enemies:
+                target = (0, 0)
+                valid_target = False
+            else:
+                target = enemies[0].position
+                valid_target = True
             last_distance = 10000
             for e in enemies:
                 dist_squared = (t.coord_x - e.position[0]) ** 2 + (t.coord_x - e.position[0]) ** 2
@@ -107,23 +112,26 @@ def main():
             
             t.turn_tower(target)
             t.shoot()
+            if not enemies:
+                t.valid_target = False
+            else:
+                t.valid_target = True
         
         # loop through the events
         for event in pygame.event.get():
             # All the logic of the game should be decided here, and later processed after this FOR
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                print(pos)
                 for w in widgets:
                     w.pressed(pos[0], pos[1])
             #  Sample key handling for press and release of a specified button (be it mouse or keyboard)
-            """if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    minta = True
+                    enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
 
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    minta = False"""
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    enemies = []
             
             # check if the event is the X button
             if event.type == pygame.QUIT:
