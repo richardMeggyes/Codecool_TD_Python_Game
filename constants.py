@@ -1,28 +1,22 @@
+import pygame
+
+from maphandlers import *
+
+
 class Constants:
-    @classmethod
-    def COLOR_WHITE(cls):
-        return (255, 255, 255)
-
-    @classmethod
-    def COLOR_GREY(cls):
-        return (200, 200, 200)
-
-    @classmethod
-    def COLOR_BLACK(cls):
-        return (0, 0, 0)
-
-    @classmethod
-    def COLOR_PURPLE(cls):
-        return (255, 0, 255)
-
-    @classmethod
-    def COLOR_RED(cls):
-        return (255, 0, 0)
-
-    @classmethod
-    def COLOR_GREEN(cls):
-        return (0, 255, 0)
-
-    @classmethod
-    def COLOR_BLUE(cls):
-        return (0, 0, 255)
+    COLOR_WHITE = (255, 255, 255)
+    COLOR_GREY = (200, 200, 200)
+    COLOR_BLACK = (0, 0, 0)
+    COLOR_PURPLE = (255, 0, 255)
+    COLOR_RED = (255, 0, 0)
+    COLOR_GREEN = (0, 255, 0)
+    COLOR_BLUE = (0, 0, 255)
+    level1 = import_map("Assets/level1.txt")
+    grass = pygame.image.load("Assets/grass.png")
+    path = pygame.image.load("Assets/path.png")
+    start_path = pygame.image.load("Assets/start_path.png")
+    end_path = pygame.image.load("Assets/end_path.png")
+    error = pygame.image.load("Assets/error.png")
+    player = pygame.image.load("Assets/enemy.png")
+    tower_image = "Assets/tower1.png"
+    resolution = 20
