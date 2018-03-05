@@ -98,7 +98,7 @@ def main():
         
         for t in towers:
             if not enemies:
-                target = (0, 0)
+                target = tiles_list[0]
                 valid_target = False
             else:
                 target = enemies[0].position
