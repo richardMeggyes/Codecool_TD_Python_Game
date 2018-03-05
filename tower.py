@@ -70,7 +70,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((width, height))
     tower1 = Tower(screen,30, 50, "./Assets/tower1.png")
     while True:
-        pygame.draw.rect(screen, (200, 200, 200), pygame.Rect(0, 0, width, height))
+        pygame.draw.rect(screen, constants.COLOR_GREY(), pygame.Rect(0, 0, width, height))
         tower1.turn_tower((400,300))
         tower1.draw()
         tower1.shoot()

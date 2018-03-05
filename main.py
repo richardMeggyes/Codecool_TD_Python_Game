@@ -4,6 +4,7 @@ from maphandlers import *
 from simplebutton import *
 from enemy import *
 from tower import *
+from constants import *
 
 
 def enemy_step_forward(enemy_step_update_interval, i, delay_until):
@@ -24,15 +25,6 @@ def main():
     pygame.font.init()
     
     WIDTH, HEIGHT = 640, 480
-    
-    #  Init color triplets
-    COLOR_WHITE = (255, 255, 255)
-    COLOR_BLACK = (0, 0, 0)
-    COLOR_RED = (255, 0, 0)
-    COLOR_GREEN = (0, 255, 0)
-    COLOR_BLUE = (0, 0, 255)
-    COLOR_PURPLE = (255, 0, 255)
-    COLOR_GREY = (150, 150, 150)
     mainDisplay = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("CC- Tower Defense")
     level1 = import_map("Assets/level1.txt")
@@ -52,35 +44,35 @@ def main():
     clock = pygame.time.Clock()
     clock_counter = 0
     # Gameloop
-    
-    delay_until = 0.0
-    enemy_step_update_interval = 2  # Enemy előreléptetés ideje megadva másodpercben 0.05 = 20 lépés / sec
+
     widgets = []
-    widgets.append(button(mainDisplay, 100, 100, 100, 50, "New Game", COLOR_GREEN, COLOR_RED, do_nothing))
-    widgets.append(button(mainDisplay, 400, 100, 100, 50, "Exit", COLOR_RED, COLOR_BLUE, pygame.quit, exit))
+    widgets.append(
+        button(mainDisplay, 100, 100, 100, 50, "New Game", Constants.COLOR_GREEN(), Constants.COLOR_RED(), do_nothing))
+    widgets.append(
+        button(mainDisplay, 400, 100, 100, 50, "Exit", Constants.COLOR_RED(), Constants.COLOR_BLUE(), pygame.quit,
+               exit))
     
     enemies = []
-    speed = 1
-    # enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
+
     
     towers = []
     towers.append(Tower(mainDisplay, 80, 80, tower_image, 9, 0.2))
     
     while 1:
         # clear the mainDisplay before drawing it again
-        mainDisplay.fill(COLOR_GREY)
+        mainDisplay.fill(Constants.COLOR_GREY())
 
         """if time.time() > delay_until:
             delay_until = time.time() + enemy_step_update_interval
-            enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))"""
+            enemies.append(Enemy(mainDisplay, player, 0, tiles_list))"""
         
         for t in towers:
             if not enemies:
                 target = tiles_list[0]
-                valid_target = False
+                t.valid_target = False
             else:
                 target = enemies[0].position
-                valid_target = True
+                t.valid_target = True
             last_distance = 10000
             for e in enemies:
                 dist_squared = (t.coord_x - e.position[0]) ** 2 + (t.coord_x - e.position[0]) ** 2
@@ -98,14 +90,15 @@ def main():
         # loop through the events
         for event in pygame.event.get():
             # All the logic of the game should be decided here, and later processed after this FOR
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 for w in widgets:
                     w.pressed(pos[0], pos[1])
-            #  Sample key handling for press and release of a specified button (be it mouse or keyboard)
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    enemies.append(Enemy(mainDisplay, speed, player, 0, tiles_list))
+                    enemies.append(Enemy(mainDisplay, player, 0, tiles_list))
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
@@ -124,8 +117,7 @@ def main():
                 e.move()
         
         # update the mainDisplay
-        # for w in widgets:
-        #    w.draw(mainDisplay)
+
         for y in range(int(HEIGHT / resolution)):
             for x in range(int(WIDTH / resolution)):
                 mainDisplay.blit(grass, (x * resolution, y * resolution))
@@ -134,7 +126,9 @@ def main():
 
         mainDisplay.blit(start_path, (tiles_list[0][0] * resolution, tiles_list[0][1] * resolution))
         mainDisplay.blit(end_path, (tiles_list[-1][0] * resolution, tiles_list[-1][1] * resolution))
-
+        
+        # for w in widgets:
+        #    w.draw(mainDisplay)
         for e in enemies:
             e.draw()
         for t in towers:

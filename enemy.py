@@ -2,11 +2,11 @@ import pygame, os, sys, time
 
 
 class Enemy:
-    
-    def __init__(self, display, s, skin, counter, path):
+
+    def __init__(self, display, skin, counter, path):
         self.target_display = display
         self.place = 0
-        self.speed = s
+        self.speed = 1
         self.skin = skin
         self.counter = counter
         self.path = path
