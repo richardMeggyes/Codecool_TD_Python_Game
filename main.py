@@ -14,7 +14,11 @@ def donothing():
 
 
 def calc_distance_squared(a, b):
-    return ((a[0] - b[0]) ** 2 + (a[1] + b[1]) ** 2)
+    x1 = a[0]
+    y1 = a[1]
+    x2 = b[0]
+    y2 = b[1]
+    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
 
 def collisiondetection(enemies, towers):
@@ -22,8 +26,9 @@ def collisiondetection(enemies, towers):
         for t_iter, tower in enumerate(towers):
             for b_iter, bullet in enumerate(tower.bullets):
                 asd = calc_distance_squared(enemy.position, bullet.position)
-                print(asd)
-                if asd < 500:
+                print(enemy.position, bullet.position, asd)
+                #print(asd)
+                if asd < 50:
                     enemy.hitpoints -= bullet.damage
                     towers[t_iter].bullets.pop(b_iter)
 
@@ -54,7 +59,7 @@ def gameloop():
     while gameon:
         # clear the mainDisplay before drawing it again
         mainDisplay.fill(Constants.COLOR_GREY)
-        """
+
         for t in towers:
             if not enemies:
                 target = tiles_list[0]
@@ -65,9 +70,9 @@ def gameloop():
             last_distance = 10000
             for e in enemies:
                 dist_squared = calc_distance_squared(t.position, e.position)
-                print(sqrt(dist_squared))
-                if sqrt(dist_squared) > 30000:
-                    time.sleep(3)
+                #print(sqrt(dist_squared))
+                #if sqrt(dist_squared) > 30000:
+                    #time.sleep(3)
                 if dist_squared < last_distance and dist_squared < t.range ** 2:
                     last_distance = dist_squared
                     target = e.position
@@ -77,7 +82,7 @@ def gameloop():
             if not enemies:
                 t.valid_target = False
             else:
-                t.valid_target = True"""
+                t.valid_target = True
 
         # loop through the events
         for event in pygame.event.get():
