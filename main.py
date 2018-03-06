@@ -15,30 +15,30 @@ def donothing():
 def gameloop():
     pygame.init()
     pygame.font.init()
-
+    
     WIDTH, HEIGHT = 640, 480
     mainDisplay = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("CC- Tower Defense")
-
+    
     pygame.display.update()
-
+    
     tiles_list = get_path_from_map(Constants.level1)
-
+    
     clock = pygame.time.Clock()
     clock_counter = 0
-
+    
     # Gameloop
-
+    
     enemies = []
     towers = []
-
+    
     # Sample tower for testing purposes only
-    towers.append(Tower(mainDisplay, 80, 80, Constants.tower_image, 9, 0.2))
+    towers.append(Tower(mainDisplay, (80, 80), Constants.tower_image, 9, 0.2))
     gameon = True
     while gameon:
         # clear the mainDisplay before drawing it again
         mainDisplay.fill(Constants.COLOR_GREY)
-
+        
         for t in towers:
             if not enemies:
                 target = tiles_list[0]
@@ -48,66 +48,66 @@ def gameloop():
                 t.valid_target = True
             last_distance = 10000
             for e in enemies:
-                dist_squared = (t.coord_x - e.position[0]) ** 2 + (t.coord_x - e.position[0]) ** 2
+                dist_squared = (t.position[0] - e.position[0]) ** 2 + (t.position[1] - e.position[1]) ** 2
                 if dist_squared < last_distance and dist_squared < t.range ** 2:
                     last_distance = dist_squared
                     target = e.position
-
+            
             t.turn_tower(target)
             t.shoot()
             if not enemies:
                 t.valid_target = False
             else:
                 t.valid_target = True
-
+        
         # loop through the events
         for event in pygame.event.get():
             # All the logic of the game should be decided here, and later processed after this FOR
-
+            
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     enemies.append(Enemy(mainDisplay, Constants.player, 0, tiles_list))
-
+                
                 if event.key == pygame.K_BACKSPACE:
                     enemies = []
-
+                
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     gameon = False
                     # exit(0)
-
+            
             # check if the event is the X button
             if event.type == pygame.QUIT:
                 pygame.quit()
                 gameon = False
                 # exit(0)
-
+        
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
                 enemies.pop(i)
             if clock_counter % 6 == 0:
                 e.move()
-
+        
         # update the mainDisplay
-
+        
         for y in range(int(HEIGHT / Constants.resolution)):
             for x in range(int(WIDTH / Constants.resolution)):
                 mainDisplay.blit(Constants.grass, (x * Constants.resolution, y * Constants.resolution))
         for item in tiles_list:
             mainDisplay.blit(Constants.path, (item[1] * Constants.resolution, item[0] * Constants.resolution))
-
+        
         mainDisplay.blit(Constants.start_path,
                          (tiles_list[0][0] * Constants.resolution, tiles_list[0][1] * Constants.resolution))
         mainDisplay.blit(Constants.end_path,
                          (tiles_list[-1][0] * Constants.resolution, tiles_list[-1][1] * Constants.resolution))
-
+        
         for e in enemies:
             e.draw()
         for t in towers:
             t.draw()
             for bullet in t.bullets:
                 bullet.print_projectile()
-
+        
         pygame.display.update()
         # set a specific framerate of the display/meaning that every second there will be () ticks of the while
         clock_counter += 1
