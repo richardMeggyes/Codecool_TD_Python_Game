@@ -4,6 +4,7 @@ from maphandlers import *
 
 
 class Constants:
+    WIDTH, HEIGHT = 640, 480
     COLOR_WHITE = (255, 255, 255)
     COLOR_GREY = (200, 200, 200)
     COLOR_BLACK = (0, 0, 0)

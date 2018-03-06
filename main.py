@@ -16,8 +16,7 @@ def gameloop():
     pygame.init()
     pygame.font.init()
 
-    WIDTH, HEIGHT = 640, 480
-    mainDisplay = pygame.display.set_mode((WIDTH, HEIGHT))
+    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
     pygame.display.set_caption("CC- Tower Defense")
 
     pygame.display.update()
@@ -48,7 +47,7 @@ def gameloop():
                 t.valid_target = True
             last_distance = 10000
             for e in enemies:
-                dist_squared = (t.coord_x - e.position[0]) ** 2 + (t.coord_x - e.position[0]) ** 2
+                dist_squared = (t.coord_x - e.position[0]) ** 2 + (t.coord_y - e.position[1]) ** 2
                 if dist_squared < last_distance and dist_squared < t.range ** 2:
                     last_distance = dist_squared
                     target = e.position
@@ -90,8 +89,8 @@ def gameloop():
 
         # update the mainDisplay
 
-        for y in range(int(HEIGHT / Constants.resolution)):
-            for x in range(int(WIDTH / Constants.resolution)):
+        for y in range(int(Constants.HEIGHT / Constants.resolution)):
+            for x in range(int(Constants.WIDTH / Constants.resolution)):
                 mainDisplay.blit(Constants.grass, (x * Constants.resolution, y * Constants.resolution))
         for item in tiles_list:
             mainDisplay.blit(Constants.path, (item[1] * Constants.resolution, item[0] * Constants.resolution))
@@ -118,14 +117,23 @@ def gameloop():
     pygame.quit()
 
 
-def main():
+def menuloop():
     menu = Tk()
-    menu.geometry("%dx%d+0+0" % (200, 200))
+    menu.geometry("%dx%d+0+0" % (Constants.WIDTH, Constants.HEIGHT))
+    label1 = Label(menu, text="CC Tower Defense")
+    label1.config(font=('Arial', '40'))
+    label1.pack(side=TOP, pady=20)
     newgamebutton = Button(menu, text="New Game", command=gameloop)
-    newgamebutton.pack(pady=20)
-    cancelbutton = Button(menu, text="Cancel", command=exit)
-    cancelbutton.pack(pady=20)
+    newgamebutton.pack(pady=20, padx=60, fill=X)
+    createmapbutton = Button(menu, text="Create new map", command=donothing)
+    createmapbutton.pack(pady=20, padx=60, fill=X)
+    exitbutton = Button(menu, text="Exit", command=exit)
+    exitbutton.pack(pady=20, padx=60, fill=X)
     menu.mainloop()
+
+def main():
+    menuloop()
+
 
 
 if __name__ == "__main__":
