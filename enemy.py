@@ -17,7 +17,7 @@ class Enemy:
     
     def calc_position(self):
         self.position = (
-        (self.path[self.place][1] * Constants.resolution), (self.path[self.place][0] * Constants.resolution))
+            (self.path[self.place][1] * Constants.resolution), (self.path[self.place][0] * Constants.resolution))
     
     def draw(self):
         self.calc_position()
@@ -26,13 +26,15 @@ class Enemy:
         # health bar
         max_length = 50  # px
         current_length = (self.hitpoints / self.maxhp) * max_length
+        bar_height = 5
+        offset_y = 10
         # background
         pygame.draw.rect(self.target_display, Constants.COLOR_GREY,
                          (self.position[0] - max_length / 2 + Constants.resolution / 2,
-                          self.position[1] - 10, max_length, 5))
+                          self.position[1] - offset_y, max_length, bar_height))
         pygame.draw.rect(self.target_display, Constants.COLOR_GREEN,
                          (self.position[0] - max_length / 2 + Constants.resolution / 2,
-                          self.position[1] - 10, current_length, 5))
+                          self.position[1] - offset_y, current_length, bar_height))
     
     def move(self):
         self.place += 1
