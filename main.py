@@ -86,6 +86,7 @@ def gameloop():
                 enemies.pop(i)
             if clock_counter % 6 == 0:
                 e.move()
+        
 
         # update the mainDisplay
 
