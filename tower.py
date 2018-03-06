@@ -44,11 +44,12 @@ class Tower:
 
 
 class Projectile:
-    def __init__(self, display, coord_x, coord_y, angle):
+    def __init__(self, display, coord_x, coord_y, angle, dmg=1):
         self.display = display
         self.size = 10
         self.position = (coord_x, coord_y)
         self.angle = angle
+        self.damage = dmg
 
     def print_projectile(self):
         pygame.draw.rect(self.display, (255, 0, 0), pygame.Rect(self.position[0], self.position[1], self.size,

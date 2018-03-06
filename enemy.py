@@ -3,15 +3,16 @@ import pygame, os, sys, time
 
 class Enemy:
 
-    def __init__(self, display, skin, counter, path):
+    def __init__(self, display, skin, counter, path, hp=1):
         self.target_display = display
         self.place = 0
         self.speed = 1
         self.skin = skin
         self.counter = counter
         self.path = path
-        self.position = (0,0)
+        self.position = (0, 0)
         self.resolution = 20
+        self.hitpoints = hp
     
     def calc_position(self):
         self.position =((self.path[self.place][1] * self.resolution), (self.path[self.place][0] *

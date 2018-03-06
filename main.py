@@ -3,6 +3,7 @@ from tkinter import *
 from constants import *
 from enemy import *
 from tower import *
+from math import sqrt
 
 
 # TODO NiceToHave: enemy glájdol egyik poziból a másikba és nem ugrál
@@ -10,6 +11,22 @@ from tower import *
 def donothing():
     print("Doing nothing like a pro")
     pass
+
+
+def calc_distance_squared(a, b):
+    return ((a[0] - b[0]) ** 2 + (a[1] + b[1]) ** 2)
+
+
+def collisiondetection(enemies, towers):
+    for enemy in enemies:
+        for t_iter, tower in enumerate(towers):
+            for b_iter, bullet in enumerate(tower.bullets):
+                asd = calc_distance_squared(enemy.position, bullet.position)
+                print(asd)
+                if asd < 500:
+                    enemy.hitpoints -= bullet.damage
+                    towers[t_iter].bullets.pop(b_iter)
+
 
 
 def gameloop():
@@ -32,12 +49,12 @@ def gameloop():
     towers = []
 
     # Sample tower for testing purposes only
-    towers.append(Tower(mainDisplay, (80, 80), Constants.tower_image, 9, 0.2))
+    towers.append(Tower(mainDisplay, (400, 130), Constants.tower_image, 9, 0.2))
     gameon = True
     while gameon:
         # clear the mainDisplay before drawing it again
         mainDisplay.fill(Constants.COLOR_GREY)
-
+        """
         for t in towers:
             if not enemies:
                 target = tiles_list[0]
@@ -47,17 +64,20 @@ def gameloop():
                 t.valid_target = True
             last_distance = 10000
             for e in enemies:
-                dist_squared = (t.position[0] - e.position[0]) ** 2 + (t.position[1] - e.position[1]) ** 2
+                dist_squared = calc_distance_squared(t.position, e.position)
+                print(sqrt(dist_squared))
+                if sqrt(dist_squared) > 30000:
+                    time.sleep(3)
                 if dist_squared < last_distance and dist_squared < t.range ** 2:
                     last_distance = dist_squared
                     target = e.position
-
+                
             t.turn_tower(target)
             t.shoot()
             if not enemies:
                 t.valid_target = False
             else:
-                t.valid_target = True
+                t.valid_target = True"""
 
         # loop through the events
         for event in pygame.event.get():
@@ -80,6 +100,11 @@ def gameloop():
                 pygame.quit()
                 gameon = False
                 # exit(0)
+        collisiondetection(enemies, towers)
+        
+        for iter, enemy in enumerate(enemies):
+            if enemy.hitpoints < 1:
+                enemies.pop(iter)
 
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
@@ -117,6 +142,11 @@ def gameloop():
     pygame.quit()
 
 
+def createmap():
+    pass
+
+
+
 def menuloop():
     menu = Tk()
     menu.geometry("%dx%d+0+0" % (Constants.WIDTH, Constants.HEIGHT))
@@ -125,8 +155,8 @@ def menuloop():
     label1.pack(side=TOP, pady=20)
     newgamebutton = Button(menu, text="New Game", command=gameloop)
     newgamebutton.pack(pady=20, padx=60, fill=X)
-    createmapbutton = Button(menu, text="Create new map", command=donothing)
-    createmapbutton.pack(pady=20, padx=60, fill=X)
+    # createmapbutton = Button(menu, text="Create new map", command=donothing)
+    # createmapbutton.pack(pady=20, padx=60, fill=X)
     exitbutton = Button(menu, text="Exit", command=exit)
     exitbutton.pack(pady=20, padx=60, fill=X)
     menu.mainloop()
