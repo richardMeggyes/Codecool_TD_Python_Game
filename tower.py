@@ -5,15 +5,14 @@ import pygame
 
 
 class Tower:
-    def __init__(self, display, coord_x, coord_y, image_location, bullet_speed, time_to_shoot_again):
+    def __init__(self, display, position, image_location, bullet_speed, time_to_shoot_again):
         self.display = display
         self.image = pygame.image.load(image_location)
         self.original_image = self.image
-        self.coord_x = coord_x
-        self.coord_y = coord_y
+        self.position = position
         self.SIZE = 40
         self.angle = 0
-        self.rect = self.image.get_rect(center=(self.coord_x, self.coord_y))
+        self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
         self.bullets = []
         self.time = time.time()
         self.time_to_shoot_again = time_to_shoot_again
@@ -22,24 +21,24 @@ class Tower:
         self.valid_target = False
 
     def draw(self):
-        self.rect = self.image.get_rect(center=(self.coord_x, self.coord_y))
+        self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
         self.display.blit(self.image, self.rect)
 
     def turn_tower(self, position):
-        self.angle = (180 / math.pi) * -math.atan2(position[1] - self.coord_y, position[0] - self.coord_x) - 90
+        self.angle = (180 / math.pi) * -math.atan2(position[1] - self.position[1], position[0] - self.position[0]) - 90
         self.image = pygame.transform.rotate(self.original_image, self.angle)
 
     def shoot(self):
         if self.time + self.time_to_shoot_again < time.time():
             self.time = time.time()
             if self.valid_target:
-                new_bullet = Projectile(self.display, self.coord_x, self.coord_y, self.angle)
+                new_bullet = Projectile(self.display, self.position[0], self.position[1], self.angle)
                 self.bullets.append(new_bullet)
 
         for i, bullet in enumerate(self.bullets):
             bullet.move(self.bullet_speed)
 
-            dist = math.sqrt((self.coord_x - bullet.coord_x) ** 2 + (self.coord_y - bullet.coord_y) ** 2)
+            dist = math.sqrt((self.position[0] - bullet.position[0]) ** 2 + (self.position[1] - bullet.position[1]) ** 2)
             if dist > self.range:
                 self.bullets.pop(i)
 
@@ -48,20 +47,19 @@ class Projectile:
     def __init__(self, display, coord_x, coord_y, angle):
         self.display = display
         self.size = 10
-        self.coord_x = coord_x
-        self.coord_y = coord_y
+        self.position = (coord_x, coord_y)
         self.angle = angle
 
     def print_projectile(self):
-        pygame.draw.rect(self.display, (255, 0, 0), pygame.Rect(self.coord_x, self.coord_y, self.size, self.size))
+        pygame.draw.rect(self.display, (255, 0, 0), pygame.Rect(self.position[0], self.position[1], self.size,
+                                                                self.size))
 
     def move(self, bullet_speed):
         angle = (math.radians(self.angle) - math.pi / 2) - math.radians(90)
         x = math.sin(angle) * bullet_speed
         y = math.cos(angle) * bullet_speed
 
-        self.coord_x += float(x)
-        self.coord_y += float(y)
+        self.position = (self.position[0] + float(x), self.position[1] + float(y))
 
 
 if __name__ == "__main__":

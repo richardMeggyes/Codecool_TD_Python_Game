@@ -32,7 +32,7 @@ def gameloop():
     towers = []
 
     # Sample tower for testing purposes only
-    towers.append(Tower(mainDisplay, 80, 80, Constants.tower_image, 9, 0.2))
+    towers.append(Tower(mainDisplay, (80, 80), Constants.tower_image, 9, 0.2))
     gameon = True
     while gameon:
         # clear the mainDisplay before drawing it again
@@ -47,7 +47,7 @@ def gameloop():
                 t.valid_target = True
             last_distance = 10000
             for e in enemies:
-                dist_squared = (t.coord_x - e.position[0]) ** 2 + (t.coord_y - e.position[1]) ** 2
+                dist_squared = (t.position[0] - e.position[0]) ** 2 + (t.position[1] - e.position[1]) ** 2
                 if dist_squared < last_distance and dist_squared < t.range ** 2:
                     last_distance = dist_squared
                     target = e.position
