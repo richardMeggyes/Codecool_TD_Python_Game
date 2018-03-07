@@ -53,9 +53,6 @@ def gameloop():
     towers = []
     
     # Sample tower for testing purposes only
-    towers.append(Tower(mainDisplay, (400, 130), Constants.tower_image, 9, 0.2))
-    towers.append(Tower(mainDisplay, (200, 130), Constants.tower_image, 9, 0.2))
-    towers.append(Tower(mainDisplay, (400, 300), Constants.tower_image, 9, 0.2))
     gameon = True
     while gameon:
         # clear the mainDisplay before drawing it again
@@ -91,7 +88,7 @@ def gameloop():
                     pygame.quit()
                     gameon = False
                     # exit(0)
-            
+            towers = new_tower(event, towers, mainDisplay, tiles_list)
             # check if the event is the X button
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -158,6 +155,24 @@ def menuloop():
     exitbutton = Button(menu, text="Exit", command=exit)
     exitbutton.pack(pady=20, padx=60, fill=X)
     menu.mainloop()
+
+
+def new_tower(event, towers, display, tiles):
+    if event.type == pygame.MOUSEBUTTONUP:
+        pos = pygame.mouse.get_pos()
+        
+        pos = ((pos[0] // 20) * 20, (pos[1] // 20) * 20)
+        
+        tiles_in_correct_format = [(y * 20, x * 20) for [x, y] in tiles]
+        
+        print(tiles_in_correct_format)
+        print(pos)
+        
+        if pos not in tiles_in_correct_format and (pos[0] + 20, pos[1]) not in tiles_in_correct_format and (
+        pos[0], pos[1] + 20) not in tiles_in_correct_format:
+            towers.append(Tower(display, pos))
+    
+    return towers
 
 
 def main():
