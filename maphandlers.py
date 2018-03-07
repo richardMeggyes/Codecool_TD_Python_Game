@@ -1,12 +1,12 @@
 def get_path_from_map(map):
     sorted_list = []
-
-    # start tile
-    for iter, row in enumerate(map):
-        for iter2, col in enumerate(row):
-            if col == '2':
-                sorted_list.append([iter2, iter])
-                break
+    done = False
+    while not done:
+        for iter, row in enumerate(map):
+            for iter2, col in enumerate(row):
+                if col == '2':
+                    sorted_list.append([iter2, iter])
+                    done = True
 
     finished_parsing = False
     # get tiles in order
