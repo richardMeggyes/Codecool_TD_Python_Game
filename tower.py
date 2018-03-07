@@ -10,7 +10,7 @@ class Tower:
         self.display = display
         self.image = pygame.image.load(image_location)
         self.original_image = self.image
-        self.position = position
+        self.position = (position[0]+Constants.resolution,position[1]+Constants.resolution)
         self.SIZE = 40
         self.angle = 0
         self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))

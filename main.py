@@ -159,14 +159,15 @@ def new_tower(event, towers, display, tiles):
     if event.type == pygame.MOUSEBUTTONUP:
         pos = pygame.mouse.get_pos()
         
-        pos = ((pos[0] // 20)*20, (pos[1] // 20)*20)
+        pos = ((pos[0] // 20) * 20, (pos[1] // 20) * 20)
         
-        tiles_in_correct_format = [(x*20,y*20) for [x,y] in tiles]
+        tiles_in_correct_format = [(y * 20, x * 20) for [x, y] in tiles]
         
         print(tiles_in_correct_format)
         print(pos)
         
-        if pos not in tiles_in_correct_format:
+        if pos not in tiles_in_correct_format and (pos[0] + 20, pos[1]) not in tiles_in_correct_format and (
+        pos[0], pos[1] + 20) not in tiles_in_correct_format:
             towers.append(Tower(display, pos))
     
     return towers
