@@ -48,7 +48,7 @@ def gameloop():
     clock_counter = 0
     
     # Gameloop
-    
+    playerHP = 100
     enemies = []
     towers = []
     
@@ -102,10 +102,12 @@ def gameloop():
         for iter, enemy in enumerate(enemies):
             if enemy.hitpoints < 1:
                 enemies.pop(iter)
-        
+
+        # checking if enemies stepped to the last tile
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
                 enemies.pop(i)
+                playerHP -= 1
             if clock_counter % 6 == 0:
                 e.move()
         
