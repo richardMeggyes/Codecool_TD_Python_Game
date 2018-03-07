@@ -1,6 +1,6 @@
 import math
 import time
-
+from constants import *
 import pygame
 
 
@@ -44,16 +44,20 @@ class Tower:
 
 
 class Projectile:
-    def __init__(self, display, coord_x, coord_y, angle, dmg=1):
+    def __init__(self, display, coord_x, coord_y, angle, dmg=1, image_location=Constants.bullet_image):
         self.display = display
         self.size = 10
         self.position = (coord_x, coord_y)
         self.angle = angle
         self.damage = dmg
+        self.image = pygame.image.load(image_location)
+        self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
 
     def print_projectile(self):
-        pygame.draw.rect(self.display, (255, 0, 0), pygame.Rect(self.position[0], self.position[1], self.size,
-                                                                self.size))
+        #pygame.draw.rect(self.display, (255, 0, 0), pygame.Rect(self.position[0], self.position[1], self.size,
+    # self.size))
+        self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
+        self.display.blit(self.image, self.rect)
 
     def move(self, bullet_speed):
         angle = (math.radians(self.angle) - math.pi / 2) - math.radians(90)

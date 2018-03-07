@@ -20,4 +20,5 @@ class Constants:
     error = pygame.image.load("Assets/error.png")
     player = pygame.image.load("Assets/enemy.png")
     tower_image = "Assets/tower1.png"
+    bullet_image = "Assets/bullet.png"
     resolution = 20
