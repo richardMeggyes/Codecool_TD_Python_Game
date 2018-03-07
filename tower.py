@@ -21,7 +21,7 @@ class Tower:
         self.valid_target = False
 
     def draw(self):
-        self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
+        self.rect = self.image.get_rect(center=self.position)
         self.display.blit(self.image, self.rect)
 
     def turn_tower(self, position):

@@ -25,10 +25,10 @@ def collisiondetection(enemies, towers):
     for enemy in enemies:
         for t_iter, tower in enumerate(towers):
             for b_iter, bullet in enumerate(tower.bullets):
-                asd = calc_distance_squared(enemy.position, bullet.position)
-                print(enemy.position, bullet.position, asd)
-                #print(asd)
-                if asd < 50:
+                squared_distance = calc_distance_squared(enemy.position, bullet.position)
+                # print(enemy.position, bullet.position, squared_distance)
+                # print(squared_distance)
+                if squared_distance < 50:
                     enemy.hitpoints -= bullet.damage
                     towers[t_iter].bullets.pop(b_iter)
 
@@ -55,6 +55,8 @@ def gameloop():
 
     # Sample tower for testing purposes only
     towers.append(Tower(mainDisplay, (400, 130), Constants.tower_image, 9, 0.2))
+    towers.append(Tower(mainDisplay, (200, 130), Constants.tower_image, 9, 0.2))
+    towers.append(Tower(mainDisplay, (400, 300), Constants.tower_image, 9, 0.2))
     gameon = True
     while gameon:
         # clear the mainDisplay before drawing it again
@@ -67,7 +69,7 @@ def gameloop():
             else:
                 target = enemies[0].position
                 t.valid_target = True
-            last_distance = 10000
+            last_distance = 3000
             for e in enemies:
                 dist_squared = calc_distance_squared(t.position, e.position)
                 #print(sqrt(dist_squared))
