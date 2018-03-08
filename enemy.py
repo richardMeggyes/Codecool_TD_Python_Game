@@ -24,7 +24,7 @@ class Enemy:
         self.target_display.blit(self.skin, self.position)
         
         # health bar
-        max_length = 50  # px
+        max_length = 25  # px
         current_length = (self.hitpoints / self.maxhp) * max_length
         bar_height = 5
         offset_y = 10

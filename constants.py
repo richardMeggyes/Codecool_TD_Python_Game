@@ -12,13 +12,16 @@ class Constants:
     COLOR_RED = (255, 0, 0)
     COLOR_GREEN = (0, 255, 0)
     COLOR_BLUE = (0, 0, 255)
+    TOWER_PRICE = 10
+    KILL_REWARD = 1
     level1 = import_map("Assets/level1.txt")
-    grass = pygame.image.load("Assets/grass.png")
-    path = pygame.image.load("Assets/path.png")
+    grass = pygame.image.load("Assets/fu.png")
+    path = pygame.image.load("Assets/ut.png")
     start_path = pygame.image.load("Assets/start_path.png")
     end_path = pygame.image.load("Assets/end_path.png")
     error = pygame.image.load("Assets/error.png")
-    player = pygame.image.load("Assets/enemy.png")
-    tower_image = "Assets/tower1.png"
-    bullet_image = "Assets/bullet.png"
+    player = pygame.image.load("Assets/enemy_2.png")
+    tower_image = "Assets/tower_2.png"
+    bullet_image = "Assets/bullet_2.png"
     resolution = 20
+    

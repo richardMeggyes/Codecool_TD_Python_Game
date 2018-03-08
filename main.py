@@ -4,6 +4,7 @@ from constants import *
 from enemy import *
 from tower import *
 from math import sqrt
+from time import sleep
 
 
 # TODO NiceToHave: enemy glájdol egyik poziból a másikba és nem ugrál
@@ -37,7 +38,7 @@ def gameloop():
     pygame.init()
     pygame.font.init()
     
-    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
+    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
     pygame.display.set_caption("CC- Tower Defense")
     
     pygame.display.update()
@@ -48,9 +49,11 @@ def gameloop():
     clock_counter = 0
     
     # Gameloop
-    playerHP = 100
+    
     enemies = []
     towers = []
+    points = 50
+    lives = 5
     
     # Sample tower for testing purposes only
     gameon = True
@@ -88,7 +91,12 @@ def gameloop():
                     pygame.quit()
                     gameon = False
                     # exit(0)
-            towers = new_tower(event, towers, mainDisplay, tiles_list)
+            
+            nt = new_tower(event, towers, mainDisplay, tiles_list, points)
+            towers = nt[0]
+            points = nt[1]
+            print(points)
+            
             # check if the event is the X button
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -99,12 +107,12 @@ def gameloop():
         for iter, enemy in enumerate(enemies):
             if enemy.hitpoints < 1:
                 enemies.pop(iter)
-
-        # checking if enemies stepped to the last tile
+                points += Constants.KILL_REWARD
+        
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
                 enemies.pop(i)
-                playerHP -= 1
+                lives -= 1
             if clock_counter % 6 == 0:
                 e.move()
         
@@ -128,12 +136,31 @@ def gameloop():
             for bullet in t.bullets:
                 bullet.print_projectile()
         
+        draw_text("♥ " + str(lives), mainDisplay, 0)
+        draw_text("$ " + str(points), mainDisplay, Constants.resolution * 2)
+        
+        if lives < 1:
+            endgame(mainDisplay)
+        
         pygame.display.update()
         # set a specific framerate of the display/meaning that every second there will be () ticks of the while
         clock_counter += 1
         if clock_counter == 60:
             clock_counter = 0
         clock.tick(60)
+    pygame.display.quit()
+    pygame.quit()
+
+
+def endgame(display):
+    display.fill(Constants.COLOR_BLACK)
+    bigfont = pygame.font.SysFont("Arial", 60)
+    textsurface = bigfont.render("You lost!", True, Constants.COLOR_RED)
+    centered_width = (Constants.WIDTH / 2) - (textsurface.get_width() / 2)
+    centered_height = (Constants.HEIGHT / 2) - (textsurface.get_height() / 2)
+    display.blit(textsurface, (centered_width, centered_height))
+    pygame.display.update()
+    sleep(4)
     pygame.display.quit()
     pygame.quit()
 
@@ -157,7 +184,20 @@ def menuloop():
     menu.mainloop()
 
 
-def new_tower(event, towers, display, tiles):
+def draw_text(text, display, pos_y):
+    width = Constants.resolution * 2
+    height = Constants.resolution
+    pos_x = Constants.WIDTH - width
+    pos_y = pos_y
+    text = str(text)
+    pygame.draw.rect(display, Constants.COLOR_GREY, (pos_x, pos_y, width, height))
+    myfont = pygame.font.SysFont('Arial', 20)
+    textsurface = myfont.render(text, False, Constants.COLOR_BLACK)
+    display.blit(textsurface,
+                 (pos_x + width / 2 - textsurface.get_width() / 2, pos_y + height / 2 - textsurface.get_height() / 2))
+
+
+def new_tower(event, towers, display, tiles, points):
     if event.type == pygame.MOUSEBUTTONUP:
         pos = pygame.mouse.get_pos()
         
@@ -169,10 +209,11 @@ def new_tower(event, towers, display, tiles):
         print(pos)
         
         if pos not in tiles_in_correct_format and (pos[0] + 20, pos[1]) not in tiles_in_correct_format and (
-        pos[0], pos[1] + 20) not in tiles_in_correct_format:
+                pos[0], pos[1] + 20) not in tiles_in_correct_format and points >= Constants.TOWER_PRICE:
             towers.append(Tower(display, pos))
+            points -= Constants.TOWER_PRICE
     
-    return towers
+    return [towers, points]
 
 
 def main():
