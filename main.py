@@ -37,7 +37,7 @@ def gameloop():
     pygame.init()
     pygame.font.init()
     
-    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
+    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
     pygame.display.set_caption("CC- Tower Defense")
     
     pygame.display.update()
@@ -111,6 +111,7 @@ def gameloop():
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
                 enemies.pop(i)
+                lives -= 1
             if clock_counter % 6 == 0:
                 e.move()
         
@@ -133,8 +134,9 @@ def gameloop():
             t.draw()
             for bullet in t.bullets:
                 bullet.print_projectile()
-                
-        draw_lives(lives, mainDisplay)
+        
+        draw_text("♥ " + str(lives), mainDisplay, 0)
+        draw_text("$ " + str(points), mainDisplay, Constants.resolution * 2)
         
         pygame.display.update()
         # set a specific framerate of the display/meaning that every second there will be () ticks of the while
@@ -165,15 +167,15 @@ def menuloop():
     menu.mainloop()
 
 
-def draw_lives(lives, display):
-    width = Constants.resolution*2
+def draw_text(text, display, pos_y):
+    width = Constants.resolution * 2
     height = Constants.resolution
     pos_x = Constants.WIDTH - width
-    pos_y = 0
-    lives = str(lives)
+    pos_y = pos_y
+    text = str(text)
     pygame.draw.rect(display, Constants.COLOR_GREY, (pos_x, pos_y, width, height))
     myfont = pygame.font.SysFont('Arial', 20)
-    textsurface = myfont.render(lives, False, Constants.COLOR_BLACK)
+    textsurface = myfont.render(text, False, Constants.COLOR_BLACK)
     display.blit(textsurface,
                  (pos_x + width / 2 - textsurface.get_width() / 2, pos_y + height / 2 - textsurface.get_height() / 2))
 
