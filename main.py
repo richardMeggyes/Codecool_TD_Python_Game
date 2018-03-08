@@ -51,6 +51,8 @@ def gameloop():
     
     enemies = []
     towers = []
+    points = 50
+    lives = 5
     
     # Sample tower for testing purposes only
     gameon = True
@@ -88,7 +90,12 @@ def gameloop():
                     pygame.quit()
                     gameon = False
                     # exit(0)
-            towers = new_tower(event, towers, mainDisplay, tiles_list)
+            
+            nt = new_tower(event, towers, mainDisplay, tiles_list, points)
+            towers = nt[0]
+            points = nt[1]
+            print(points)
+            
             # check if the event is the X button
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -99,6 +106,7 @@ def gameloop():
         for iter, enemy in enumerate(enemies):
             if enemy.hitpoints < 1:
                 enemies.pop(iter)
+                points += Constants.KILL_REWARD
         
         for i, e in enumerate(enemies):
             if e.place == len(tiles_list) - 1:
@@ -125,6 +133,8 @@ def gameloop():
             t.draw()
             for bullet in t.bullets:
                 bullet.print_projectile()
+                
+        draw_lives(lives, mainDisplay)
         
         pygame.display.update()
         # set a specific framerate of the display/meaning that every second there will be () ticks of the while
@@ -155,7 +165,20 @@ def menuloop():
     menu.mainloop()
 
 
-def new_tower(event, towers, display, tiles):
+def draw_lives(lives, display):
+    width = Constants.resolution*2
+    height = Constants.resolution
+    pos_x = Constants.WIDTH - width
+    pos_y = 0
+    lives = str(lives)
+    pygame.draw.rect(display, Constants.COLOR_GREY, (pos_x, pos_y, width, height))
+    myfont = pygame.font.SysFont('Arial', 20)
+    textsurface = myfont.render(lives, False, Constants.COLOR_BLACK)
+    display.blit(textsurface,
+                 (pos_x + width / 2 - textsurface.get_width() / 2, pos_y + height / 2 - textsurface.get_height() / 2))
+
+
+def new_tower(event, towers, display, tiles, points):
     if event.type == pygame.MOUSEBUTTONUP:
         pos = pygame.mouse.get_pos()
         
@@ -167,10 +190,11 @@ def new_tower(event, towers, display, tiles):
         print(pos)
         
         if pos not in tiles_in_correct_format and (pos[0] + 20, pos[1]) not in tiles_in_correct_format and (
-        pos[0], pos[1] + 20) not in tiles_in_correct_format:
+                pos[0], pos[1] + 20) not in tiles_in_correct_format and points >= Constants.TOWER_PRICE:
             towers.append(Tower(display, pos))
+            points -= Constants.TOWER_PRICE
     
-    return towers
+    return [towers, points]
 
 
 def main():
