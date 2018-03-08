@@ -38,7 +38,9 @@ def gameloop():
     pygame.init()
     pygame.font.init()
     
+    
     mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
+
     pygame.display.set_caption("CC- Tower Defense")
     
     pygame.display.update()
@@ -132,10 +134,11 @@ def gameloop():
         for e in enemies:
             e.draw()
         for t in towers:
-            t.draw()
+            
             for bullet in t.bullets:
                 bullet.print_projectile()
-        
+        for t in towers:
+            t.draw()
         draw_text("♥ " + str(lives), mainDisplay, 0)
         draw_text("$ " + str(points), mainDisplay, Constants.resolution * 2)
         
