@@ -138,11 +138,10 @@ def gameloop():
         
         draw_text("♥ " + str(lives), mainDisplay, 0)
         draw_text("$ " + str(points), mainDisplay, Constants.resolution * 2)
-
+        
         if lives < 1:
             endgame(mainDisplay)
-
-
+        
         pygame.display.update()
         # set a specific framerate of the display/meaning that every second there will be () ticks of the while
         clock_counter += 1
@@ -156,7 +155,7 @@ def gameloop():
 def endgame(display):
     display.fill(Constants.COLOR_BLACK)
     bigfont = pygame.font.SysFont("Arial", 60)
-    textsurface = bigfont.render("You lost!", False, Constants.COLOR_RED)
+    textsurface = bigfont.render("You lost!", True, Constants.COLOR_RED)
     centered_width = (Constants.WIDTH / 2) - (textsurface.get_width() / 2)
     centered_height = (Constants.HEIGHT / 2) - (textsurface.get_height() / 2)
     display.blit(textsurface, (centered_width, centered_height))
@@ -164,7 +163,6 @@ def endgame(display):
     sleep(4)
     pygame.display.quit()
     pygame.quit()
-
 
 
 def createmap():

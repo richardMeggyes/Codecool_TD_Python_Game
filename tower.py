@@ -24,6 +24,7 @@ class Tower:
     def draw(self):
         self.rect = self.image.get_rect(center=self.position)
         self.display.blit(self.image, self.rect)
+        
     
     def turn_tower(self, position):
         self.angle = (180 / math.pi) * -math.atan2(position[1] - self.position[1], position[0] - self.position[0]) - 90
