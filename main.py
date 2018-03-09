@@ -7,8 +7,6 @@ from math import sqrt
 from time import sleep
 
 
-# TODO NiceToHave: enemy glájdol egyik poziból a másikba és nem ugrál
-
 def donothing():
     print("Doing nothing like a pro")
     pass
@@ -39,7 +37,8 @@ def gameloop():
     pygame.font.init()
     
     
-    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
+    #mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
+    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
 
     pygame.display.set_caption("CC- Tower Defense")
     
@@ -56,7 +55,12 @@ def gameloop():
     towers = []
     points = 50
     lives = 5
-    
+    spawn_time = 0
+    enemies_to_spawn = 3
+    enemy_spawner_counter = 3
+    turn_counter = 0
+    enemy_hp = 5
+
     # Sample tower for testing purposes only
     gameon = True
     while gameon:
@@ -151,6 +155,32 @@ def gameloop():
         if clock_counter == 60:
             clock_counter = 0
         clock.tick(60)
+
+
+        # Spawning enemies automatically
+        enemy_in_start = False
+        for enemy in enemies:
+            if enemy.position == (tiles_list[0][0], tiles_list[0][1]): enemy_in_start = True
+
+        if not enemy_in_start and enemies_to_spawn > 0:
+            enemies.append(Enemy(mainDisplay, Constants.player, 0, tiles_list, enemy_hp))
+            enemies_to_spawn -= 1
+
+        if spawn_time < time.time():
+            if turn_counter % 3 == 0: # plus 1 enemy every third turn
+                enemy_spawner_counter += 1
+
+            if enemies_to_spawn < 1:
+                enemies_to_spawn = enemy_spawner_counter
+            spawn_time = time.time() + 5
+
+            turn_counter += 1
+            enemy_hp += 1
+
+
+
+        print(turn_counter)
+
     pygame.display.quit()
     pygame.quit()
 
