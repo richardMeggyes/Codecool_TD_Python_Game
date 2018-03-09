@@ -178,9 +178,6 @@ def gameloop():
             enemy_hp += 1
 
 
-
-        print(turn_counter)
-
     pygame.display.quit()
     pygame.quit()
 
@@ -237,10 +234,7 @@ def new_tower(event, towers, display, tiles, points):
         pos = ((pos[0] // 20) * 20, (pos[1] // 20) * 20)
         
         tiles_in_correct_format = [(y * 20, x * 20) for [x, y] in tiles]
-        
-        print(tiles_in_correct_format)
-        print(pos)
-        
+
         if pos not in tiles_in_correct_format and (pos[0] + 20, pos[1]) not in tiles_in_correct_format and (
                 pos[0], pos[1] + 20) not in tiles_in_correct_format and points >= Constants.TOWER_PRICE:
             towers.append(Tower(display, pos))
