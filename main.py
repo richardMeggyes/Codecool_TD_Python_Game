@@ -37,8 +37,8 @@ def gameloop():
     pygame.font.init()
     
     
-    #mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
-    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
+    mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
+    #mainDisplay = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
 
     pygame.display.set_caption("CC- Tower Defense")
     
@@ -101,7 +101,6 @@ def gameloop():
             nt = new_tower(event, towers, mainDisplay, tiles_list, points)
             towers = nt[0]
             points = nt[1]
-            print(points)
             
             # check if the event is the X button
             if event.type == pygame.QUIT:
